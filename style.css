@@ -1,0 +1,57 @@
+body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.main{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1.5fr auto;
+    margin: 5% 20%;
+    
+}
+.cls1{
+    background: #95e0f3;
+    height: 65%;
+    width: 100%;
+    
+}
+.cls2{
+    background: #f6e4d0;
+    height: 100%;
+    width: 100%;
+    grid-row: 1 / span 2;
+    grid-column: 2;
+}
+.cls3{
+    background: #e8c2df;
+    height: 100%;
+    width: 100%;
+    grid-column: 1;
+    
+}
+
+.form{
+    
+    max-width: 80%;
+}
+input, select, textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  

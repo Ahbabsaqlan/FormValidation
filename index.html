@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Practise</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <section class="main">
+        <div class="cls1"><form action="/submit-form" method="POST" class="form">
+            <h1>Registration</h1>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+          
+            <br>
+          
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+          
+            <br>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+          
+            <br>
+
+            <label for="confirmPass">Confirm Password:</label>
+            <input type="password" id="confirmPass" name="confirmPass" required>
+          
+            <br>
+
+            <label for="DOB">DOB:</label>
+            <input type="date" id="DOB" name="DOB" required>
+          
+            <br>
+
+            <label for="currentCountry">Current Country:</label>
+            <select name="currentCountry">
+                <option value="choose">Choose an Option</option>
+                <option value="bd">Bangladesh</option>
+                <option value="in">India</option>
+                <option value="pk">Pakistan</option>
+                <option value="my">Malaysia</option>
+            </select>
+          
+            <br>
+
+            <label for="gender">Sex:</label>
+            <input type="radio" name="gender" value="male"> Male
+            <input type="radio" name="gender" value="female"> Female
+          
+            <br>
+
+            <label for="opinion">Opinion poor air quality index:</label>
+            <textarea name="message" rows="4" cols="50">Enter your message...</textarea>
+          
+            <input type="submit" value="Submit">
+          </form></div>
+        <div class="cls2"></div>
+        <div class="cls3"></div>
+    </section>
+</body>
+</html>
