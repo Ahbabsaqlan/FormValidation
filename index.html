@@ -47,18 +47,88 @@
             <br>
 
             <label for="gender">Sex:</label>
-            <input type="radio" name="gender" value="male"> Male
-            <input type="radio" name="gender" value="female"> Female
+            <input type="radio" name="gender" value="male" id="male"> Male
+            <input type="radio" name="gender" value="female" id="female"> Female
           
             <br>
 
             <label for="opinion">Opinion poor air quality index:</label>
             <textarea name="message" rows="4" cols="50">Enter your message...</textarea>
           
-            <input type="submit" value="Submit">
+            <input type="submit" value="Submit" id="submit">
+
           </form></div>
         <div class="cls2"></div>
         <div class="cls3"></div>
     </section>
+    <script>
+        const form = document.querySelector('.form');
+        const submitButton = document.getElementById('submit');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Perform your validation or processing here
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPass = document.getElementById('confirmPass').value;
+            const dob = document.getElementById('DOB').value;
+            const opinion = document.querySelector('textarea[name="message"]').value;
+            const country = document.querySelector('select[name="currentCountry"]').value;
+            const genderMale = document.getElementById('male');
+            const genderFemale = document.getElementById('female');
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+            const alphanumericPattern = /^[a-zA-Z0-9]+$/;
+
+            
+            
+            
+            
+            // Check if the name is alphanumeric
+            if (!alphanumericPattern.test(name)) {
+                alert('Name must be alphanumeric.');
+                return;
+            }
+            // Check if the email is valid
+            else if (!emailPattern.test(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+            // Check if the password and confirm password match
+            else if (password !== confirmPass) {
+                alert('Passwords do not match!');
+                return;
+            }
+            // Check if the password and confirm password match
+            else if (password.length < 8) {
+                alert('Password must be at least 8 characters long.');
+                return;
+            }
+            // Check if the date is in the correct format
+            else if (!datePattern.test(dob)) {
+                alert('Please enter a valid date in the format YYYY-MM-DD.');
+                return;
+            }
+            // Check if the country is selected
+            else if (country === 'choose') {
+                alert('Please select a country.');
+                return;
+            }
+            // Check if the gender is selected
+            else if (!genderMale.checked && !genderFemale.checked) {
+                alert("Please select a gender.");
+                return; 
+            }
+            // Check if the opinion is provided
+            else if(opinion.trim() === '' || opinion === 'Enter your message...') {
+                alert('Please provide your opinion.');
+                return;
+            }
+            alert('Form submitted successfully!');
+        });
+
+    </script>
 </body>
 </html>
