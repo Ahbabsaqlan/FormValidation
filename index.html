@@ -7,128 +7,193 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <section class="main">
-        <div class="cls1"><form action="/submit-form" method="POST" class="form">
-            <h1>Registration</h1>
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-          
-            <br>
-          
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-          
-            <br>
-
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-          
-            <br>
-
-            <label for="confirmPass">Confirm Password:</label>
-            <input type="password" id="confirmPass" name="confirmPass" required>
-          
-            <br>
-
-            <label for="DOB">DOB:</label>
-            <input type="date" id="DOB" name="DOB" required>
-          
-            <br>
-
-            <label for="currentCountry">Current Country:</label>
-            <select name="currentCountry">
-                <option value="choose">Choose an Option</option>
-                <option value="bd">Bangladesh</option>
-                <option value="in">India</option>
-                <option value="pk">Pakistan</option>
-                <option value="my">Malaysia</option>
-            </select>
-          
-            <br>
-
-            <label for="gender">Sex:</label>
-            <input type="radio" name="gender" value="male" id="male"> Male
-            <input type="radio" name="gender" value="female" id="female"> Female
-          
-            <br>
-
-            <label for="opinion">Opinion poor air quality index:</label>
-            <textarea name="message" rows="4" cols="50">Enter your message...</textarea>
-          
-            <input type="submit" value="Submit" id="submit">
-
-          </form></div>
+    <div class="main">
+        <div class="cls1">
+          <h4>Register</h4>
+          <form id="registrationForm" novalidate>
+        
+            <div class="form-group" id="usernameGroup">
+              <label for="username">Username</label>
+              <input type="text" id="username" />
+              <div class="error"></div>
+            </div>
+        
+            <div class="form-group" id="emailGroup">
+              <label for="email">Email</label>
+              <input type="email" id="email" />
+              <div class="error"></div>
+            </div>
+        
+            <div class="form-group" id="dobGroup">
+              <label for="dob">Date of Birth</label>
+              <input type="date" id="dob" />
+              <div class="error"></div>
+            </div>
+        
+            <div class="form-group" id="genderGroup">
+              <label>Gender</label>
+              <div class="radio-group">
+                <label><input type="radio" name="gender" value="Male" /> Male</label>
+                <label><input type="radio" name="gender" value="Female" /> Female</label>
+                <label><input type="radio" name="gender" value="Other" /> Other</label>
+              </div>
+              <div class="error"></div>
+            </div>
+        
+            <div class="form-group" id="countryGroup">
+              <label for="country">Country</label>
+              <select id="country">
+                <option value="">Select country</option>
+                <option>Bangladesh</option>
+                <option>India</option>
+                <option>Pakistan</option>
+                <option>Malaysia</option>
+                <option>Other</option>
+              </select>
+              <div class="error"></div>
+            </div>
+        
+            <div class="form-group" id="opinionGroup">
+              <label for="opinion">Your Opinion</label>
+              <textarea id="opinion" rows="3"></textarea>
+              <div class="error"></div>
+            </div>
+        
+            <div class="form-group" id="passwordGroup">
+              <label for="password">Password</label>
+              <input type="password" id="password" />
+              <div class="error"></div>
+            </div>
+        
+            <div class="form-group" id="confirmGroup">
+              <label for="confirmPassword">Confirm Password</label>
+              <input type="password" id="confirmPassword" />
+              <div class="error"></div>
+            </div>
+        
+            <button type="submit">Submit</button>
+          </form>
+        </div>
         <div class="cls2"></div>
         <div class="cls3"></div>
-    </section>
+    </div>
     <script>
-        const form = document.querySelector('.form');
-        const submitButton = document.getElementById('submit');
-
-        form.addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent the default form submission
-
-            // Perform your validation or processing here
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const confirmPass = document.getElementById('confirmPass').value;
-            const dob = document.getElementById('DOB').value;
-            const opinion = document.querySelector('textarea[name="message"]').value;
-            const country = document.querySelector('select[name="currentCountry"]').value;
-            const genderMale = document.getElementById('male');
-            const genderFemale = document.getElementById('female');
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            const datePattern = /^\d{4}-\d{2}-\d{2}$/;
-            const alphanumericPattern = /^[a-zA-Z0-9]+$/;
-
-            
-            
-            
-            
-            // Check if the name is alphanumeric
-            if (!alphanumericPattern.test(name)) {
-                alert('Name must be alphanumeric.');
-                return;
-            }
-            // Check if the email is valid
-            else if (!emailPattern.test(email)) {
-                alert('Please enter a valid email address.');
-                return;
-            }
-            // Check if the password and confirm password match
-            else if (password !== confirmPass) {
-                alert('Passwords do not match!');
-                return;
-            }
-            // Check if the password and confirm password match
-            else if (password.length < 8) {
-                alert('Password must be at least 8 characters long.');
-                return;
-            }
-            // Check if the date is in the correct format
-            else if (!datePattern.test(dob)) {
-                alert('Please enter a valid date in the format YYYY-MM-DD.');
-                return;
-            }
-            // Check if the country is selected
-            else if (country === 'choose') {
-                alert('Please select a country.');
-                return;
-            }
-            // Check if the gender is selected
-            else if (!genderMale.checked && !genderFemale.checked) {
-                alert("Please select a gender.");
-                return; 
-            }
-            // Check if the opinion is provided
-            else if(opinion.trim() === '' || opinion === 'Enter your message...') {
-                alert('Please provide your opinion.');
-                return;
-            }
-            alert('Form submitted successfully!');
-        });
-
+      const form = document.getElementById('registrationForm');
+    
+      const username = document.getElementById('username');
+      const email = document.getElementById('email');
+      const dob = document.getElementById('dob');
+      const country = document.getElementById('country');
+      const opinion = document.getElementById('opinion');
+      const password = document.getElementById('password');
+      const confirmPassword = document.getElementById('confirmPassword');
+    
+      function showError(input, message) {
+        const formGroup = input.closest('.form-group');
+        formGroup.className = 'form-group error';
+        formGroup.querySelector('.error').textContent = message;
+        formGroup.style.marginBottom = '0px';
+      }
+    
+      function showSuccess(input) {
+        const formGroup = input.closest('.form-group');
+        formGroup.className = 'form-group success';
+        formGroup.querySelector('.error').textContent = '';
+        formGroup.style.marginBottom = '10px';
+      }
+    
+      function getGender() {
+        const genderRadios = document.querySelectorAll('input[name="gender"]');
+        for (const radio of genderRadios) {
+          if (radio.checked) return radio.value;
+        }
+        return '';
+      }
+    
+      function validateForm() {
+        let isValid = true;
+    
+        // Username
+        if (username.value.trim() === '') {
+          showError(username, 'Username is required');
+          isValid = false;
+        } else {
+          showSuccess(username);
+        }
+    
+        // Email
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email.value.trim())) {
+          showError(email, 'Valid email is required');
+          isValid = false;
+        } else {
+          showSuccess(email);
+        }
+    
+        // DOB
+        if (dob.value === '') {
+          showError(dob, 'Date of birth is required');
+          isValid = false;
+        } else {
+          showSuccess(dob);
+        }
+    
+        // Gender
+        const genderGroup = document.getElementById('genderGroup');
+        if (!getGender()) {
+          genderGroup.className = 'form-group error';
+          genderGroup.querySelector('.error').textContent = 'Select your gender';
+          genderGroup.style.marginBottom = '0px';
+          isValid = false;
+        } else {
+          genderGroup.className = 'form-group success';
+          genderGroup.querySelector('.error').textContent = '';
+          genderGroup.style.marginBottom = '10px';
+        }
+    
+        // Country
+        if (country.value === '') {
+          showError(country, 'Select a country');
+          isValid = false;
+        } else {
+          showSuccess(country);
+        }
+    
+        // Opinion
+        if (opinion.value.trim().length < 10) {
+          showError(opinion, 'Please share at least 10 characters');
+          isValid = false;
+        } else {
+          showSuccess(opinion);
+        }
+    
+        // Password
+        if (password.value.length < 6) {
+          showError(password, 'Password must be at least 6 characters');
+          isValid = false;
+        } else {
+          showSuccess(password);
+        }
+    
+        // Confirm Password
+        if (password.value !== confirmPassword.value || confirmPassword.value === '') {
+          showError(confirmPassword, 'Passwords must match');
+          isValid = false;
+        } else {
+          showSuccess(confirmPassword);
+        }
+    
+        return isValid;
+      }
+    
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (validateForm()) {
+          alert('Registration successful!');
+          form.reset();
+          document.querySelectorAll('.form-group').forEach(g => g.className = 'form-group');
+        }
+      });
     </script>
 </body>
 </html>
