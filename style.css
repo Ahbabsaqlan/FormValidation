@@ -5,12 +5,22 @@ body{
     height: 100vh;
     width: 100vw;
 }
+.navbar{
+    background: #3b88db;
+    height: 5%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    justify-content: center;
+    /* align-items: center; */
+}
 .main{
     height: 90%;
     width: 60%;
     display: grid;
     margin: auto auto;
-    margin-top: 5%;
+    margin-top: 2%;
     border-radius: 10px;
     padding: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -48,6 +58,22 @@ body{
 
 .form-group {
   margin-bottom: 10px;
+}
+
+#termGroup{
+  display: grid;
+  grid-template-columns: 1fr 6fr;
+  grid-template-rows: 1fr 1fr;
+  align-items: center;
+  justify-items: start;
+}
+.termError{
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+#termGroup label{
+  margin: 0%;
+  color: #b34200;
 }
 
 label {

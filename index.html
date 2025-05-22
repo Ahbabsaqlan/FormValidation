@@ -7,6 +7,21 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
+    <nav class="navbar">
+        <div class="nav-logo">
+            <h1>Lab Practise</h1>
+        </div>
+        <div class="links">
+            <a href="./index.html">Home</a>
+            <a href="./about.html">About</a>
+            <a href="./contact.html">Contact</a>
+            <a href="./login.html">Login</a>
+        </div>
+        <div class="nav-search">
+            <input type="text" placeholder="Search...">
+            <button>Search</button>
+        </div>
+    </nav>
     <div class="main">
         <div class="cls1">
           <h4>Register</h4>
@@ -14,19 +29,19 @@
         
             <div class="form-group" id="usernameGroup">
               <label for="username">Username</label>
-              <input type="text" id="username" />
+              <input type="text" id="username" name="uname"/>
               <div class="error"></div>
             </div>
         
             <div class="form-group" id="emailGroup">
               <label for="email">Email</label>
-              <input type="email" id="email" />
+              <input type="email" id="email" name="email"/>
               <div class="error"></div>
             </div>
         
             <div class="form-group" id="dobGroup">
               <label for="dob">Date of Birth</label>
-              <input type="date" id="dob" />
+              <input type="date" id="dob" name="dob"/>
               <div class="error"></div>
             </div>
         
@@ -42,7 +57,7 @@
         
             <div class="form-group" id="countryGroup">
               <label for="country">Country</label>
-              <select id="country">
+              <select id="country" name="country">
                 <option value="">Select country</option>
                 <option>Bangladesh</option>
                 <option>India</option>
@@ -55,35 +70,37 @@
         
             <div class="form-group" id="opinionGroup">
               <label for="opinion">Your Opinion</label>
-              <textarea id="opinion" rows="2"></textarea>
+              <textarea id="opinion" rows="2" name="opinion"></textarea>
               <div class="error"></div>
             </div>
         
             <div class="form-group" id="passwordGroup">
               <label for="password">Password</label>
-              <input type="password" id="password" />
+              <input type="password" id="password" name="password"/>
               <div class="error"></div>
             </div>
         
             <div class="form-group" id="confirmGroup">
               <label for="confirmPassword">Confirm Password</label>
-              <input type="password" id="confirmPassword" />
+              <input type="password" id="confirmPassword" name="confirmPassword" />
               <div class="error"></div>
             </div>
 
             <div class="form-group" id="selectColorGroup">
               <label for="selectColor">Select Background Color</label>
-              <input type="color" id="color" />
+              <input type="color" id="color" name="color"/>
               <div class="error"></div>
             </div>
-        
+			<div class="form-group" id="termGroup">
+			  <input type="checkbox" id="term" name="term"/>
+			  <label for="term">I agree to the terms and conditions</label>
+			<div class="error termError"></div>
+			</div>
             <button type="submit">Submit</button>
           </form>
         </div>
         <div class="cls2"></div>
-        <div class="cls3">
-
-        </div>
+        <div class="cls3"></div>
     </div>
     <script src="./script.js"></script>
 </body>

@@ -8,6 +8,7 @@ const form = document.getElementById('registrationForm');
       const password = document.getElementById('password');
       const confirmPassword = document.getElementById('confirmPassword');
       const color = document.getElementById('color');
+
     
       function showError(input, message) {
         const formGroup = input.closest('.form-group');
@@ -133,6 +134,14 @@ const form = document.getElementById('registrationForm');
           isValid = false;
         } else {
           showSuccess(color);
+        }
+        // Terms and Conditions
+        const termsCheckbox = document.getElementById('term');
+        if (!termsCheckbox.checked) {
+          showError(termsCheckbox, 'You must accept the terms and conditions');
+          isValid = false;
+        } else {
+          showSuccess(termsCheckbox);
         }
     
         return isValid;
