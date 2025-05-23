@@ -36,14 +36,7 @@ body{
     grid-row: 1;
     padding: 0px 5%;
 }
-.cls2{
-    background: #f6e4d0;
-    height: 100%;
-    width: 100%;
-    grid-row-start: 1 ;
-    grid-row-end: 3;
-    grid-column: 2;
-}
+
 .cls3{
     background: #e8c2df;
     height: 100%;
@@ -137,6 +130,103 @@ button {
 
 button:hover {
   background-color: #0056b3;
+}
+
+
+/* aqi div */
+
+.cls2{
+  background: #f6e4d0;
+  height: 100%;
+  width: 100%;
+  grid-row-start: 1 ;
+  grid-row-end: 3;
+  grid-column: 2;
+  box-sizing: border-box;
+  display: grid;
+}
+.ranking-card {
+  background-color: #fff;
+  /* border-radius: 8px; */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  width: 100%;
+  /* max-width: 800px; */
+  padding: 20px;
+}
+
+.ranking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.ranking-header h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+.ranking-header p {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.info-icon {
+  font-size: 18px;
+  color: #666;
+  cursor: pointer;
+}
+
+.ranking-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ranking-table th,
+.ranking-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.ranking-table th {
+  font-weight: bold;
+  background-color: #f5f5f5;
+}
+
+.ranking-table td:first-child {
+  font-weight: bold;
+}
+
+.flag-icon {
+  width: 24px;
+  height: 18px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.aqi-value {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+  font-size: 14px;
+}
+
+.red {
+  background-color: #ff5252; /* Red */
+}
+
+.orange {
+  background-color: #ff9800; /* Orange */
+}
+
+.yellow {
+  background-color: #ffc107; /* Yellow */
 }
 
   

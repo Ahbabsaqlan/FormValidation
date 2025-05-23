@@ -150,10 +150,15 @@ const form = document.getElementById('registrationForm');
       form.addEventListener('submit', function (e) {
         e.preventDefault();
         if (validateForm()) {
-          alert('Registration successful!');
-          // Optionally, you can submit the form here
           form.submit();
-          //form.reset();
           document.querySelectorAll('.form-group').forEach(g => g.className = 'form-group');
         }
       });
+
+
+      // Change background color
+      // const colorInput = document.getElementById('color');
+      // const body = document.body;
+      // colorInput.addEventListener('input', function () {
+      //   body.style.backgroundColor = colorInput.value;
+      // });
