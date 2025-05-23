@@ -1,6 +1,47 @@
 <?php
 session_start();
+
+$login_error = '';
 $formData = $_SESSION['form_data'] ?? [];
+
+// Handle login form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
+    $conn = new mysqli("localhost", "root", "", "myDataBase");
+    if ($conn->connect_error) {
+        die("Database connection failed: " . $conn->connect_error);
+    }
+
+    $uname = trim($_POST['lgUname']);
+    $upass = trim($_POST['lgUpass']);
+
+    // Escape input
+    $uname = mysqli_real_escape_string($conn, $uname);
+    $upass = mysqli_real_escape_string($conn, $upass);
+
+    // Lookup user
+    $sql = "SELECT * FROM user WHERE email = '$uname'";
+    $result = $conn->query($sql);
+
+    if ($result && $result->num_rows >= 1) {
+        $user = $result->fetch_assoc();
+		
+        // Compare passwords safely
+        if (strcmp(trim($upass), trim($user['password'])) === 0)  {
+            $_SESSION['user'] = $user;
+			
+			echo "<script>
+                window.location.href = 'home.php';
+            </script>";
+        	exit;
+        } else {
+            $login_error = "Incorrect password.";
+        }
+    } else {
+        $login_error = "User not found.";
+    }
+
+    $conn->close();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +62,7 @@ $formData = $_SESSION['form_data'] ?? [];
         <a href="./index.php">Home</a>
         <a href="./about.html">About</a>
         <a href="./contact.html">Contact</a>
-        <a href="./login.html">Login</a>
+        <a href="./index.php">Login</a>
     </div>
     <div class="nav-search">
         <input type="text" placeholder="Search...">
@@ -216,12 +257,39 @@ $formData = $_SESSION['form_data'] ?? [];
 
     <!-- Login Section -->
     <div class="cls3">
-        <label for="uname">User Name</label>
-        <input type="text" id="uname" name="uname"/>
-        <label for="loginPassword">Password</label>
-        <input type="password" id="loginPassword" name="loginPassword"/>
-        <button type="submit">Login</button>
-        <button type="submit">Forget Password</button>
+        <div class="login-card">
+			<div class="profile-placeholder">
+        		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          			<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0-6c-2.67 0-8 1.33-8 4v2h16v-2c0-2.67-5.33-4-8-4z"/>
+        		</svg>
+      		</div>
+
+      <!-- Login Title -->
+			<h2 class="login-title">LOGIN</h2>
+
+			<?php if (!empty($login_error)): ?>
+			<div class="error" style="color:red; margin-bottom:10px;"><?= htmlspecialchars($login_error) ?></div>
+			<?php endif; ?>
+
+			<form method="POST" action="" id="login-form">
+				<input type="hidden" name="login" value="1">
+				<div class="input-field lg-group">
+					<input type="text" placeholder="Email" id="lgUname" name="lgUname" />
+					<div class="error"></div>
+				</div>
+				<div class="input-field lg-group">
+					<input type="password" placeholder="Password" id="lgUpass" name="lgUpass" />
+					<div class="error"></div>
+				</div>
+				<div class="remember-me">
+					<input type="checkbox" id="remember-me" checked />
+					<label for="remember-me">Remember me</label>
+				</div>
+				<button class="login-button" type="submit" id="login-btn">LOGIN</button>
+			</form>
+			<!-- Forgot Password Link -->
+			<p class="forgot-password">Forgot Username / Password?</p>
+        </div>
     </div>
 
 </div>

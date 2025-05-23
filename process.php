@@ -10,6 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 }
 
 if (isset($_POST['finalConfirm'])) {
+    
     $form = $_SESSION['form_data'];
 
     // Database connection
@@ -18,8 +19,34 @@ if (isset($_POST['finalConfirm'])) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    // Insert into database
+    // Check if email already exists
+    $check = $conn->prepare("SELECT email FROM user WHERE email = ?");
+    if (!$check) {
+        die("Prepare failed: " . $conn->error);
+    }
+
+    $check->bind_param("s", $form['email']);
+    $check->execute();
+    $check->store_result();
+
+    if ($check->num_rows > 0) {
+        // Email already exists
+        echo "<script>
+                alert('This email is already registered. Please use a different one.');
+                window.location.href = 'index.php';
+              </script>";
+        $check->close();
+        $conn->close();
+        exit;
+    }
+    $check->close();
+
+    // Insert new user
     $stmt = $conn->prepare("INSERT INTO user (userName, email, dob, gender, country, opinion, password) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    if (!$stmt) {
+        die("Prepare failed: " . $conn->error);
+    }
+
     $stmt->bind_param("sssssss",
         $form['uname'],
         $form['email'],
@@ -35,7 +62,7 @@ if (isset($_POST['finalConfirm'])) {
         echo "<script>
                 alert('Registration Completed Successfully!');
                 window.location.href = 'index.php';
-            </script>";
+              </script>";
         exit;
     } else {
         echo "Error: " . $stmt->error;
@@ -43,7 +70,9 @@ if (isset($_POST['finalConfirm'])) {
 
     $stmt->close();
     $conn->close();
-} else {
+}
+
+ else {
     $_SESSION['form_data'] = $_POST;
 }
 
