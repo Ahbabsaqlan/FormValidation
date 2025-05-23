@@ -16,7 +16,7 @@ body{
     /* align-items: center; */
 }
 .main{
-    height: 90%;
+    
     width: 60%;
     display: grid;
     margin: auto auto;
@@ -25,7 +25,7 @@ body{
     padding: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1.5fr 0.5fr;
+    grid-template-rows: auto auto;
     
 }
 .cls1{
@@ -143,7 +143,7 @@ button:hover {
   grid-row-end: 3;
   grid-column: 2;
   box-sizing: border-box;
-  display: grid;
+  
 }
 .ranking-card {
   background-color: #fff;
