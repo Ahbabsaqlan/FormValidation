@@ -1,8 +1,23 @@
 <?php
 session_start();
 
+// If user is already logged in, redirect to home page
+if (isset($_SESSION['user'])) {
+    header("Location: home.php");
+    exit;
+}
+
+// Check if the form is being accessed via "Edit" action
+if (isset($_SESSION['allow_edit']) && $_SESSION['allow_edit'] === true) {
+    $formData = $_SESSION['form_data'] ?? [];
+    unset($_SESSION['allow_edit']); // Use once and clear
+} else {
+    // If not allowed, clear the form data
+    unset($_SESSION['form_data']);
+    $formData = [];
+}
+
 $login_error = '';
-$formData = $_SESSION['form_data'] ?? [];
 
 // Handle login form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
@@ -14,25 +29,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     $uname = trim($_POST['lgUname']);
     $upass = trim($_POST['lgUpass']);
 
-    // Escape input
     $uname = mysqli_real_escape_string($conn, $uname);
     $upass = mysqli_real_escape_string($conn, $upass);
 
-    // Lookup user
     $sql = "SELECT * FROM user WHERE email = '$uname'";
     $result = $conn->query($sql);
 
     if ($result && $result->num_rows >= 1) {
         $user = $result->fetch_assoc();
-		
-        // Compare passwords safely
-        if (strcmp(trim($upass), trim($user['password'])) === 0)  {
+        if (strcmp(trim($upass), trim($user['password'])) === 0) {
             $_SESSION['user'] = $user;
-			
-			echo "<script>
-                window.location.href = 'home.php';
-            </script>";
-        	exit;
+            echo "<script>window.location.href = 'home.php';</script>";
+            exit;
         } else {
             $login_error = "Incorrect password.";
         }
@@ -58,15 +66,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     <div class="nav-logo">
         <h1>Lab Practise</h1>
     </div>
-    <div class="links">
-        <a href="./index.php">Home</a>
-        <a href="./about.html">About</a>
-        <a href="./contact.html">Contact</a>
-        <a href="./index.php">Login</a>
-    </div>
+    
     <div class="nav-search">
-        <input type="text" placeholder="Search...">
-        <button>Search</button>
+        <a href="#login-section">Login</a>
     </div>
 </nav>
 
@@ -256,7 +258,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     </div>
 
     <!-- Login Section -->
-    <div class="cls3">
+    <div class="cls3" id="login-section">
         <div class="login-card">
 			<div class="profile-placeholder">
         		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

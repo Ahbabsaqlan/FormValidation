@@ -5,12 +5,13 @@ function e($val) {
     return htmlspecialchars($val, ENT_QUOTES, 'UTF-8');
 }
 
+// Handle direct unauthorized access
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     die("<p style='text-align:center; color:red; font-weight:bold;'>Invalid access. <a href='index.php'>Go back</a></p>");
 }
 
+// Handle the final confirmation to insert data into DB
 if (isset($_POST['finalConfirm'])) {
-    
     $form = $_SESSION['form_data'];
 
     // Database connection
@@ -30,7 +31,6 @@ if (isset($_POST['finalConfirm'])) {
     $check->store_result();
 
     if ($check->num_rows > 0) {
-        // Email already exists
         echo "<script>
                 alert('This email is already registered. Please use a different one.');
                 window.location.href = 'index.php';
@@ -41,7 +41,7 @@ if (isset($_POST['finalConfirm'])) {
     }
     $check->close();
 
-    // Insert new user
+    // Insert user
     $stmt = $conn->prepare("INSERT INTO user (userName, email, dob, gender, country, opinion, password) VALUES (?, ?, ?, ?, ?, ?, ?)");
     if (!$stmt) {
         die("Prepare failed: " . $conn->error);
@@ -72,7 +72,15 @@ if (isset($_POST['finalConfirm'])) {
     $conn->close();
 }
 
- else {
+// Handle Edit button
+if (isset($_POST['edit'])) {
+    $_SESSION['allow_edit'] = true;
+    header("Location: index.php");
+    exit;
+}
+
+// Save form data to session if coming from index.php
+if (!isset($_SESSION['form_data']) && $_POST) {
     $_SESSION['form_data'] = $_POST;
 }
 
@@ -83,7 +91,7 @@ $form = $_SESSION['form_data'];
 <head>
     <meta charset="UTF-8" />
     <title>Confirm Your Details</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter :wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -182,8 +190,8 @@ $form = $_SESSION['form_data'];
         <form method="post" style="width: 48%;">
             <button class="confirm-btn" type="submit" name="finalConfirm">✅ Confirm</button>
         </form>
-        <form action="index.php" method="get" style="width: 48%;">
-            <button class="edit-btn" type="submit">🔁 Edit</button>
+        <form method="post" style="width: 48%;">
+            <button class="edit-btn" type="submit" name="edit">🔁 Edit</button>
         </form>
     </div>
 </div>
