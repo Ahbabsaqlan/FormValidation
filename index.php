@@ -157,105 +157,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
 
     <!-- AQI Index (unchanged) -->
     <div class="cls2">
-    <div class="ranking-card">
-    <header class="ranking-header">
-      <h1>City ranking</h1>
-      <p>Cities with high air pollution (AQI*)</p>
-      <span class="info-icon">ℹ️</span>
-    </header>
-    <table class="ranking-table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>MAJOR CITY</th>
-          <th>US AQI*</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>
-            <img src="https://flagcdn.com/24x18/bd.png " alt="Bangladesh Flag" class="flag-icon">
-            Dhaka, Bangladesh
-          </td>
-          <td><span class="aqi-value red">160</span></td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>
-            <img src="https://flagcdn.com/24x18/cl.png " alt="Chile Flag" class="flag-icon">
-            Santiago, Chile
-          </td>
-          <td><span class="aqi-value red">159</span></td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>
-            <img src="https://flagcdn.com/24x18/ug.png " alt="Uganda Flag" class="flag-icon">
-            Kampala, Uganda
-          </td>
-          <td><span class="aqi-value red">156</span></td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>
-            <img src="https://flagcdn.com/24x18/in.png " alt="India Flag" class="flag-icon">
-            Delhi, India
-          </td>
-          <td><span class="aqi-value orange">131</span></td>
-        </tr>
-        <tr>
-          <td>5</td>
-          <td>
-            <img src="https://flagcdn.com/24x18/ae.png " alt="United Arab Emirates Flag" class="flag-icon">
-            Dubai, United Arab Emirates
-          </td>
-          <td><span class="aqi-value orange">124</span></td>
-        </tr>
-        <tr>
-          <td>6</td>
-          <td>
-            <img src="https://flagcdn.com/24x18/cd.png " alt="Democratic Republic of the Congo Flag" class="flag-icon">
-            Kinshasa, Democratic Republic of the Congo
-          </td>
-          <td><span class="aqi-value orange">122</span></td>
-        </tr>
-        <tr>
-          <td>7</td>
-          <td>
-            <img src="https://flagcdn.com/24x18/cn.png " alt="China Flag" class="flag-icon">
-            Beijing, China
-          </td>
-          <td><span class="aqi-value yellow">115</span></td>
-        </tr>
-        <tr>
-          <td>8</td>
-          <td>
-            <img src="https://flagcdn.com/24x18/uz.png " alt="Uzbekistan Flag" class="flag-icon">
-            Tashkent, Uzbekistan
-          </td>
-          <td><span class="aqi-value yellow">105</span></td>
-        </tr>
-        <tr>
-          <td>9</td>
-          <td>
-            <img src="https://flagcdn.com/24x18/id.png " alt="Indonesia Flag" class="flag-icon">
-            Batam, Indonesia
-          </td>
-          <td><span class="aqi-value yellow">103</span></td>
-        </tr>
-        <tr>
-          <td>10</td>
-          <td>
-            <img src="https://flagcdn.com/24x18/id.png " alt="Indonesia Flag" class="flag-icon">
-            Jakarta, Indonesia
-          </td>
-          <td><span class="aqi-value yellow">103</span></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+      <div class="ranking-card">
+        <header class="ranking-header">
+          <h1>City ranking</h1>
+          <p>Cities with high air pollution (AQI*)</p>
+          <span class="info-icon">ℹ️</span>
+        </header>
+
+        <table class="ranking-table" id="rankingTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>MAJOR CITY</th>
+              <th>US AQI*</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr><td colspan="3" class="loading">Loading live AQI data...</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+
 
     <!-- Login Section -->
     <div class="cls3" id="login-section">

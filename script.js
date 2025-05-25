@@ -191,3 +191,91 @@ function validateLoginForm() {
 //     document.body.style.backgroundColor = colorInput.value;
 //   });
 // }
+
+
+// Aqi index featching
+
+const token = '74e3cbb45a9f7b41ce166f935a40e6532ff44213'; // Your AQICN.org token
+
+  // List of major cities with manual mapping to AQICN slugs and country codes
+  const cities = [
+    { name: "Delhi, India", slug: "delhi", countryCode: "in" },
+    { name: "Beijing, China", slug: "beijing", countryCode: "cn" },
+    { name: "Los Angeles, USA", slug: "los-angeles", countryCode: "us" },
+    { name: "Dhaka, Bangladesh", slug: "dhaka", countryCode: "bd" },
+    { name: "Santiago, Chile", slug: "santiago", countryCode: "cl" },
+    { name: "Kampala, Uganda", slug: "kampala", countryCode: "ug" },
+    { name: "Mexico City, Mexico", slug: "mexico-city", countryCode: "mx" },
+    { name: "Jakarta, Indonesia", slug: "jakarta", countryCode: "id" },
+    { name: "Dubai, UAE", slug: "dubai", countryCode: "ae" },
+    { name: "Karachi, Pakistan", slug: "karachi", countryCode: "pk" },
+    { name: "Hanoi, Vietnam", slug: "hanoi", countryCode: "vn" },
+    { name: "Cairo, Egypt", slug: "cairo", countryCode: "eg" },
+    { name: "Mumbai, India", slug: "mumbai", countryCode: "in" },
+    { name: "Tehran, Iran", slug: "tehran", countryCode: "ir" },
+    { name: "Manila, Philippines", slug: "manila", countryCode: "ph" },
+    { name: "Lima, Peru", slug: "lima", countryCode: "pe" },
+    { name: "Nairobi, Kenya", slug: "nairobi", countryCode: "ke" },
+    { name: "Seoul, South Korea", slug: "seoul", countryCode: "kr" },
+    { name: "Moscow, Russia", slug: "moscow", countryCode: "ru" },
+    { name: "Bangkok, Thailand", slug: "bangkok", countryCode: "th" }
+  ];
+
+  const tableBody = document.getElementById("tableBody");
+
+  function getCategoryClass(aqi) {
+    if (aqi >= 151) return "red";
+    else if (aqi >= 101) return "orange";
+    else return "yellow";
+  }
+
+  async function fetchAQIData() {
+    try {
+      const results = [];
+
+      for (const city of cities) {
+        const response = await fetch(`https://api.waqi.info/feed/ ${city.slug}/?token=${token}`);
+        const data = await response.json();
+
+        if (data.status === "ok") {
+          const aqi = data.data.aqi;
+          results.push({ ...city, aqi });
+        } else {
+          results.push({ ...city, aqi: null });
+        }
+      }
+
+      // Sort by AQI descending (null values go last)
+      results.sort((a, b) => (b.aqi || 0) - (a.aqi || 0));
+
+      tableBody.innerHTML = ""; // Clear loading message
+
+      results.forEach((city, index) => {
+        let aqiDisplay = "N/A";
+        let categoryClass = "";
+
+        if (city.aqi !== null) {
+          categoryClass = getCategoryClass(city.aqi);
+          aqiDisplay = `<span class="aqi-value ${categoryClass}">${city.aqi}</span>`;
+        }
+
+        const flagUrl = `https://flagcdn.com/24x18/${city.countryCode.toLowerCase()}.png`;
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td><img src="${flagUrl}" alt="Flag" class="flag-icon">${city.name}</td>
+          <td>${aqiDisplay}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+
+    } catch (error) {
+      tableBody.innerHTML = "<tr><td colspan='3' class='loading'>Failed to load data.</td></tr>";
+      console.error("Error fetching AQI data:", error);
+    }
+  }
+
+  fetchAQIData();
+  // Refresh data every 10 minutes
+  setInterval(fetchAQIData, 0.5 * 60 * 1000);

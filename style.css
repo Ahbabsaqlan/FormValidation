@@ -41,25 +41,6 @@ body {
   opacity: 0.8;
 }
 
-.nav-search input {
-  padding: 0.4rem;
-  border-radius: 4px;
-  border: none;
-  margin-right: 0.5rem;
-}
-
-.nav-search button {
-  padding: 0.4rem 0.8rem;
-  background-color: #fff;
-  color: #007bff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.nav-search button:hover {
-  background-color: #e6e6e6;
-}
 
 /* Main Content Area */
 .main {
@@ -71,7 +52,7 @@ body {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
   display: grid;
   gap: 2rem;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr 1fr;
   align-items: start;
 }
 
@@ -80,6 +61,7 @@ body {
   background: #e9f5ff;
   padding: 1.5rem;
   border-radius: 8px;
+  
 }
 
 .cls1 h4 {
@@ -161,6 +143,9 @@ button:hover {
 /* AQI Ranking Table */
 .cls2 {
   background: #fff;
+  grid-column: 2;
+  grid-row-start: 1;
+  grid-row-end: 3;
 }
 
 .ranking-card {
