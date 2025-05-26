@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     </div>
     
     <div class="nav-search">
-        <a href="#login-section">Login</a>
+        <a href="#login-section" class="nav-link"><h1>Login</h1></a>
     </div>
 </nav>
 
@@ -164,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
           <span class="info-icon">ℹ️</span>
         </header>
 
-        <table class="ranking-table" id="rankingTable">
+        <table  class="rankingTable">
           <thead>
             <tr>
               <th>#</th>
@@ -173,7 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
             </tr>
           </thead>
           <tbody id="tableBody">
-            <tr><td colspan="3" class="loading">Loading live AQI data...</td></tr>
+            <!-- <tr><td colspan="3" class="loading">Loading live AQI data...</td></tr> -->
           </tbody>
         </table>
       </div>

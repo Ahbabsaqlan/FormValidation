@@ -194,88 +194,173 @@ function validateLoginForm() {
 
 
 // Aqi index featching
+// function fetchAQIData(cities){
+//     const tbody = document.getElementById("cityList");
+//       tbody.innerHTML = "";
+//       cities.forEach((city) => {
+//         let index = Array.from(tbody.children).length;
+//         const row = document.createElement("tr");
 
-const token = '74e3cbb45a9f7b41ce166f935a40e6532ff44213'; // Your AQICN.org token
+//         const flagUrl = `https://flagcdn.com/24x18/${city.country_code.toLowerCase()}.png`;
 
-  // List of major cities with manual mapping to AQICN slugs and country codes
-  const cities = [
-    { name: "Delhi, India", slug: "delhi", countryCode: "in" },
-    { name: "Beijing, China", slug: "beijing", countryCode: "cn" },
-    { name: "Los Angeles, USA", slug: "los-angeles", countryCode: "us" },
-    { name: "Dhaka, Bangladesh", slug: "dhaka", countryCode: "bd" },
-    { name: "Santiago, Chile", slug: "santiago", countryCode: "cl" },
-    { name: "Kampala, Uganda", slug: "kampala", countryCode: "ug" },
-    { name: "Mexico City, Mexico", slug: "mexico-city", countryCode: "mx" },
-    { name: "Jakarta, Indonesia", slug: "jakarta", countryCode: "id" },
-    { name: "Dubai, UAE", slug: "dubai", countryCode: "ae" },
-    { name: "Karachi, Pakistan", slug: "karachi", countryCode: "pk" },
-    { name: "Hanoi, Vietnam", slug: "hanoi", countryCode: "vn" },
-    { name: "Cairo, Egypt", slug: "cairo", countryCode: "eg" },
-    { name: "Mumbai, India", slug: "mumbai", countryCode: "in" },
-    { name: "Tehran, Iran", slug: "tehran", countryCode: "ir" },
-    { name: "Manila, Philippines", slug: "manila", countryCode: "ph" },
-    { name: "Lima, Peru", slug: "lima", countryCode: "pe" },
-    { name: "Nairobi, Kenya", slug: "nairobi", countryCode: "ke" },
-    { name: "Seoul, South Korea", slug: "seoul", countryCode: "kr" },
-    { name: "Moscow, Russia", slug: "moscow", countryCode: "ru" },
-    { name: "Bangkok, Thailand", slug: "bangkok", countryCode: "th" }
-  ];
+//         row.innerHTML = `
+//           <td>${index + 1}</td>
+//           <td><input type="checkbox" value="${city.city_name}" class="country-checkbox"></td>
+//           <td><img src="${flagUrl}" alt="${city.city_name} Flag" class="flag-icon">${city.city_name}</td>
+//         `;
+//         tbody.appendChild(row);
+//       });
 
+//       // Enforce checkbox limit
+//       const checkboxes = document.querySelectorAll('.country-checkbox');
+//       checkboxes.forEach(cb => {
+//         cb.addEventListener('change', () => {
+//           const checked = document.querySelectorAll('.country-checkbox:checked');
+//           if (checked.length > 10) {
+//             cb.checked = false;
+//             document.getElementById("limitMessage").style.display = 'block';
+//             setTimeout(() => {
+//               document.getElementById("limitMessage").style.display = 'none';
+//             }, 3000);
+//           } else {
+//             document.getElementById("limitMessage").style.display = 'none';
+//           }
+//         });
+//       });
+// }
+// fetchAQIData(cities);
+
+// document.getElementsByClassName("country-checkbox").addEventListener("change", function () {
+//   location.reload(); // Reloads the page when the selection changes
+// });
+function showtable(){
   const tableBody = document.getElementById("tableBody");
 
-  function getCategoryClass(aqi) {
-    if (aqi >= 151) return "red";
-    else if (aqi >= 101) return "orange";
-    else return "yellow";
+  for (let i = 0; i < 20; i++) {
+    const row = document.createElement("tr");
+    row.classList.add("blank-row");
+    row.innerHTML = `
+      <td></td>
+      <td></td>
+      <td></td>
+    `;
+    tableBody.appendChild(row);
   }
+}
+window.onload = function () {
+  fetchAQIData(cities);
+  showtable()
+};
 
-  async function fetchAQIData() {
-    try {
-      const results = [];
+function fetchAQIData(cities) {
+  const tbody = document.getElementById("cityList");
+  tbody.innerHTML = ""; // Clear loading message
 
-      for (const city of cities) {
-        const response = await fetch(`https://api.waqi.info/feed/ ${city.slug}/?token=${token}`);
-        const data = await response.json();
+  cities.forEach((city, index) => {
+      const flagUrl = `https://flagcdn.com/24x18/${city.country_code.toLowerCase()}.png`;
+      const row = document.createElement("tr");
 
-        if (data.status === "ok") {
-          const aqi = data.data.aqi;
-          results.push({ ...city, aqi });
-        } else {
-          results.push({ ...city, aqi: null });
-        }
-      }
-
-      // Sort by AQI descending (null values go last)
-      results.sort((a, b) => (b.aqi || 0) - (a.aqi || 0));
-
-      tableBody.innerHTML = ""; // Clear loading message
-
-      results.forEach((city, index) => {
-        let aqiDisplay = "N/A";
-        let categoryClass = "";
-
-        if (city.aqi !== null) {
-          categoryClass = getCategoryClass(city.aqi);
-          aqiDisplay = `<span class="aqi-value ${categoryClass}">${city.aqi}</span>`;
-        }
-
-        const flagUrl = `https://flagcdn.com/24x18/${city.countryCode.toLowerCase()}.png`;
-
-        const row = document.createElement("tr");
-        row.innerHTML = `
+      row.innerHTML = `
           <td>${index + 1}</td>
-          <td><img src="${flagUrl}" alt="Flag" class="flag-icon">${city.name}</td>
-          <td>${aqiDisplay}</td>
-        `;
-        tableBody.appendChild(row);
+          <td><input type="checkbox" value="${city.city_name}" class="country-checkbox"></td>
+          <td><img src="${flagUrl}" alt="${city.city_name} Flag" class="flag-icon">${city.city_name}</td>
+          <!--<td>${city.aqi || "N/A"}</td>-->
+      `;
+      tbody.appendChild(row);
+
+      // Make whole row clickable
+      row.style.cursor = "pointer";
+      row.addEventListener('click', function (e) {
+          // Prevent double-check if user clicks on checkbox directly
+          if (e.target.type !== 'checkbox') {
+              const checkbox = row.querySelector('.country-checkbox');
+              checkbox.checked = !checkbox.checked;
+
+              // Trigger change manually (for JS logic)
+              checkbox.dispatchEvent(new Event('change'));
+
+              // Highlight/Unhighlight
+              if (checkbox.checked) {
+                  row.classList.add('selected');
+              } else {
+                  row.classList.remove('selected');
+              }
+          }
       });
+  });
 
-    } catch (error) {
-      tableBody.innerHTML = "<tr><td colspan='3' class='loading'>Failed to load data.</td></tr>";
-      console.error("Error fetching AQI data:", error);
-    }
-  }
+  // Enforce checkbox limit + interactivity
+  const checkboxes = document.querySelectorAll('.country-checkbox');
+  const limitMessage = document.getElementById("limitMessage");
 
-  fetchAQIData();
+  checkboxes.forEach((cb) => {
+      cb.addEventListener('change', () => {
+          const checked = document.querySelectorAll('.country-checkbox:checked');
+
+          // Highlight row
+          const row = cb.closest('tr');
+          if (cb.checked) {
+              row.classList.add('selected');
+          } else {
+              row.classList.remove('selected');
+          }
+
+          // Enforce limit
+          if (checked.length > 10) {
+              cb.checked = false;
+              row.classList.remove('selected');
+              limitMessage.style.display = 'block';
+              document.body.classList.add('limit-exceeded');
+              setTimeout(() => {
+                  limitMessage.style.display = 'none';
+                  document.body.classList.remove('limit-exceeded');
+                }, 3000);
+          } else {
+              limitMessage.style.display = 'none';
+              document.body.classList.remove('limit-exceeded');
+
+              // Save selections
+              const allSelected = Array.from(document.querySelectorAll('.country-checkbox:checked')).map(cb => cb.value);
+              saveSelectionsToCookie(allSelected);
+          }
+
+          // Scroll to top to show warning
+          if (checked.length > 10) {
+              limitMessage.scrollIntoView({ behavior: 'smooth' });
+          }
+      });
+  });
+}
+    
+
+
+function saveSelectionsToCookie(selectedCities) {
+  // Set cookie for 1 day (or longer if needed)
+  const expiration = new Date();
+  expiration.setDate(expiration.getDate() + 1);
+  
+  document.cookie = `selectedCities=${encodeURIComponent(JSON.stringify(selectedCities))}; path=/; expires=${expiration.toUTCString()}`;
+}
+
+
+
+function getSelectedFromCookie() {
+  const match = document.cookie.match(new RegExp('(?:^|;)\\s*selectedCities=([^;]*)'));
+  return match ? JSON.parse(decodeURIComponent(match[1])) : [];
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const saved = getSelectedFromCookie();
+
+  saved.forEach(cityName => {
+      const checkbox = [...document.querySelectorAll(".country-checkbox")].find(cb => cb.value === cityName);
+      if (checkbox) {
+          checkbox.checked = true;
+          checkbox.closest('tr').classList.add('selected');
+      }
+  });
+
+  //fetchAQIData(phpCities);
+});
   // Refresh data every 10 minutes
-  setInterval(fetchAQIData, 0.5 * 60 * 1000);
+  //setInterval(fetchAQIData, 0.5 * 60 * 1000);

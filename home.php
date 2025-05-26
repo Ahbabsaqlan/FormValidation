@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+$selectedCities = isset($_COOKIE['selectedCities']) ? json_decode($_COOKIE['selectedCities'], true) : [];
 // Handle logout
 if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
     // Unset all session variables
@@ -13,6 +13,14 @@ if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
     header("Location: index.php");
     exit;
 }
+if (isset($_POST['select'])){
+    if (empty($selectedCities)){
+        echo "<script>alert('Please select at least one city.');</script>";
+    } else {
+      header("Location: result.php");
+    }
+    
+}
 
 // Check if user is logged in
 $user = $_SESSION['user'] ?? null;
@@ -20,6 +28,23 @@ $user = $_SESSION['user'] ?? null;
 if (!$user) {
     header("Location: index.php");
     exit;
+}
+
+// Create connection
+$conn = new mysqli("localhost", "root", "", "myDataBase");
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Fetch cities
+$sql = "SELECT city_name, country_code, aqi FROM cities ORDER BY city_name ASC";
+$result = $conn->query($sql);
+
+$cities = [];
+while ($row = $result->fetch_assoc()) {
+    $cities[] = $row;
 }
 ?>
 
@@ -30,108 +55,47 @@ if (!$user) {
     <title>Welcome</title>
 </head>
 <body>
-    <h1>Welcome, <?= htmlspecialchars($user['userName']) ?>!</h1>
-    <h1>Country: <?= htmlspecialchars($user['country']) ?></h1>
+    <nav class="navbar">
+        <div class="nav-logo">
+            <h1>Lab Practise</h1>
+        </div>
+        
+        <div class="nav-search">
+            <a href="#login-section" class="nav-link"><h1>Welcome, <?= htmlspecialchars($user['userName']) ?>!</h1></a>
+        </div>
+    </nav>
     <div class="ranking-card">
-  <header class="ranking-header">
-    <h1>City ranking</h1>
-    <p>Cities with high air pollution (AQI*)</p>
-    <span class="info-icon">ℹ️</span>
-  </header>
-  <table class="ranking-table">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>MAJOR CITY</th>
-        <th>US AQI*</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><input type="checkbox" value="Dhaka, Bangladesh"></td>
-        <td>
-          <img src="https://flagcdn.com/24x18/bd.png " alt="Bangladesh Flag" class="flag-icon">
-          Dhaka, Bangladesh
-        </td>
-        <td><span class="aqi-value red">160</span></td>
-      </tr>
-      <tr>
-        <td><input type="checkbox" value="Santiago, Chile"></td>
-        <td>
-          <img src="https://flagcdn.com/24x18/cl.png " alt="Chile Flag" class="flag-icon">
-          Santiago, Chile
-        </td>
-        <td><span class="aqi-value red">159</span></td>
-      </tr>
-      <tr>
-        <td><input type="checkbox" value="Kampala, Uganda"></td>
-        <td>
-          <img src="https://flagcdn.com/24x18/ug.png " alt="Uganda Flag" class="flag-icon">
-          Kampala, Uganda
-        </td>
-        <td><span class="aqi-value red">156</span></td>
-      </tr>
-      <tr>
-        <td><input type="checkbox" value="Delhi, India"></td>
-        <td>
-          <img src="https://flagcdn.com/24x18/in.png " alt="India Flag" class="flag-icon">
-          Delhi, India
-        </td>
-        <td><span class="aqi-value orange">131</span></td>
-      </tr>
-      <tr>
-        <td><input type="checkbox" value="Dubai, United Arab Emirates"></td>
-        <td>
-          <img src="https://flagcdn.com/24x18/ae.png " alt="United Arab Emirates Flag" class="flag-icon">
-          Dubai, United Arab Emirates
-        </td>
-        <td><span class="aqi-value orange">124</span></td>
-      </tr>
-      <tr>
-        <td><input type="checkbox" value="Kinshasa, Democratic Republic of the Congo"></td>
-        <td>
-          <img src="https://flagcdn.com/24x18/cd.png " alt="Democratic Republic of the Congo Flag" class="flag-icon">
-          Kinshasa, Democratic Republic of the Congo
-        </td>
-        <td><span class="aqi-value orange">122</span></td>
-      </tr>
-      <tr>
-        <td><input type="checkbox" value="Beijing, China"></td>
-        <td>
-          <img src="https://flagcdn.com/24x18/cn.png " alt="China Flag" class="flag-icon">
-          Beijing, China
-        </td>
-        <td><span class="aqi-value yellow">115</span></td>
-      </tr>
-      <tr>
-        <td><input type="checkbox" value="Tashkent, Uzbekistan"></td>
-        <td>
-          <img src="https://flagcdn.com/24x18/uz.png " alt="Uzbekistan Flag" class="flag-icon">
-          Tashkent, Uzbekistan
-        </td>
-        <td><span class="aqi-value yellow">105</span></td>
-      </tr>
-      <tr>
-        <td><input type="checkbox" value="Batam, Indonesia"></td>
-        <td>
-          <img src="https://flagcdn.com/24x18/id.png " alt="Indonesia Flag" class="flag-icon">
-          Batam, Indonesia
-        </td>
-        <td><span class="aqi-value yellow">103</span></td>
-      </tr>
-      <tr>
-        <td><input type="checkbox" value="Jakarta, Indonesia"></td>
-        <td>
-          <img src="https://flagcdn.com/24x18/id.png " alt="Indonesia Flag" class="flag-icon">
-          Jakarta, Indonesia
-        </td>
-        <td><span class="aqi-value yellow">103</span></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+      <div class="tabil">
+        <header class="ranking-header">
+          <h1>City ranking</h1>
+          <p>Cities with high air pollution (AQI*)</p>
+          <span class="info-icon">ℹ️</span>
+        </header>
+        <p id="limitMessage" class="selection-limit" style="display:none;">⚠️ You can only select up to 10 countries.</p>
+        <table class="ranking-table" id="rankingTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>MAJOR CITY</th>
+              <th>US AQI*</th>
+            </tr>
+          </thead>
+          <tbody id="cityList" >
+            <tr><td colspan="3" class="loading">Loading live AQI data...</td></tr>
+          </tbody>
+        </table>
+      </div>
+        <div class="homebuttons">
+          <form method="POST" style="width: 48%;">
+              <button class="cntry-slt-btn" type="submit" name="select">✅ Submit</button>
+          </form>
+        </div>
+    </div>
     
     <!-- Logout link -->
+     
     <p><a href="home.php?logout=true">Logout</a></p>
+    <script>const cities=<?= json_encode($cities)?> </script>
+    <script src="./script.js"></script>
 </body>
 </html>
