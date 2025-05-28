@@ -234,22 +234,27 @@ function validateLoginForm() {
 //   location.reload(); // Reloads the page when the selection changes
 // });
 function showtable(){
-  const tableBody = document.getElementById("tableBody");
+  const tbody = document.getElementById("tableBody");
 
-  for (let i = 0; i < 20; i++) {
-    const row = document.createElement("tr");
-    row.classList.add("blank-row");
-    row.innerHTML = `
-      <td></td>
-      <td></td>
-      <td></td>
-    `;
-    tableBody.appendChild(row);
-  }
+  
+  tbody.innerHTML = ""; // Clear loading message
+
+  cities.forEach((city, index) => {
+      const flagUrl = `https://flagcdn.com/24x18/${city.country_code.toLowerCase()}.png`;
+      const row = document.createElement("tr");
+
+      row.innerHTML = `
+          <td>${index + 1}</td>
+          <!--<td><input type="checkbox" value="${city.city_name}" class="country-checkbox"></td>-->
+          <td><img src="${flagUrl}" alt="${city.city_name} Flag" class="flag-icon">${city.city_name}</td>
+          <!--<td>${city.aqi || "N/A"}</td>-->
+      `;
+      tbody.appendChild(row);
+  })
 }
 window.onload = function () {
   fetchAQIData(cities);
-  showtable()
+  showtable();
 };
 
 function fetchAQIData(cities) {

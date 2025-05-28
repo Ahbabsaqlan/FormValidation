@@ -50,6 +50,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
 
     $conn->close();
 }
+
+// Create connection
+$conn = new mysqli("localhost", "root", "", "myDataBase");
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Fetch cities
+$sql = "SELECT city_name, country_code, aqi FROM cities ORDER BY city_name ASC";
+$result = $conn->query($sql);
+
+$cities = [];
+while ($row = $result->fetch_assoc()) {
+    $cities[] = $row;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -173,6 +191,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
             </tr>
           </thead>
           <tbody id="tableBody">
+            <?php if (empty($cities)): ?>
+              <tr><td colspan="3">No cities found.</td></tr>
+            <?php else: ?>
+              <?php foreach ($cities as $index => $city): ?>
+                <?= $opa=1-($index/10); ?>
+                <tr>
+                  <td><?= $index + 1 ?></td>
+                   
+                  <td style="opacity:<?=$opa?>;"><?= htmlspecialchars($city['city_name']) ?>, <?= htmlspecialchars($city['country_code']) ?></td>
+                  <td style="opacity:<?=$opa?>;"><?= htmlspecialchars($city['aqi']) ?></td>
+                </tr>
+                <?php if ($index==19): ?>
+                    <?php break; ?>
+                <?php endif; ?>
+              <?php endforeach; ?>
+            <?php endif; ?>
+          </tbody>  
             <!-- <tr><td colspan="3" class="loading">Loading live AQI data...</td></tr> -->
           </tbody>
         </table>
