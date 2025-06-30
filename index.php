@@ -195,12 +195,13 @@ while ($row = $result->fetch_assoc()) {
               <tr><td colspan="3">No cities found.</td></tr>
             <?php else: ?>
               <?php foreach ($cities as $index => $city): ?>
-                <?= $opa=1-($index/10); ?>
+                <?php $opa=1-$index/10; ?>
+                <?php $flagUrl = "https://flagcdn.com/24x18/" . strtolower($city['country_code']) . ".png";?>
                 <tr>
                   <td><?= $index + 1 ?></td>
-                   
-                  <td style="opacity:<?=$opa?>;"><?= htmlspecialchars($city['city_name']) ?>, <?= htmlspecialchars($city['country_code']) ?></td>
-                  <td style="opacity:<?=$opa?>;"><?= htmlspecialchars($city['aqi']) ?></td>
+
+                  <td style="opacity:<?=$opa?>;"><img src="<?php echo $flagUrl; ?>" alt="<?php echo $city['city_name']; ?> Flag" class="flag-icon"><?= htmlspecialchars($city['city_name']) ?></td>
+                  <td style="opacity:<?=$opa?>; filter: blur(3px);"><?= htmlspecialchars($city['aqi']) ?></td>
                 </tr>
                 <?php if ($index==19): ?>
                     <?php break; ?>

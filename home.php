@@ -95,7 +95,11 @@ while ($row = $result->fetch_assoc()) {
     <!-- Logout link -->
      
     <p><a href="home.php?logout=true">Logout</a></p>
-    <script>const cities=<?= json_encode($cities)?> </script>
+    <script>
+          const cities=<?= json_encode($cities)?> 
+          fetchAQIData(cities);
+          showtable();
+    </script>
     <script src="./script.js"></script>
 </body>
 </html>

@@ -184,13 +184,13 @@ function validateLoginForm() {
   return isValid;
 }
 
-// Optional: Change background color based on user selection
-// const colorInput = document.getElementById('color');
-// if (colorInput) {
-//   colorInput.addEventListener('input', function () {
-//     document.body.style.backgroundColor = colorInput.value;
-//   });
-// }
+// Change background color based on user selection
+const colorInput = document.getElementById('color');
+if (colorInput) {
+  colorInput.addEventListener('input', function () {
+    document.body.style.backgroundColor = colorInput.value;
+  });
+}
 
 
 // Aqi index featching
@@ -252,10 +252,6 @@ function showtable(){
       tbody.appendChild(row);
   })
 }
-window.onload = function () {
-  fetchAQIData(cities);
-  showtable();
-};
 
 function fetchAQIData(cities) {
   const tbody = document.getElementById("cityList");
