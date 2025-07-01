@@ -21,7 +21,7 @@ if (isset($_POST['select'])){
     }
     
 }
-
+echo "<style>body { background-color: " . htmlspecialchars($_SESSION['color']) . "; }</style>";
 // Check if user is logged in
 $user = $_SESSION['user'] ?? null;
 
@@ -54,17 +54,18 @@ while ($row = $result->fetch_assoc()) {
     <link rel="stylesheet" href="./style.css">
     <title>Welcome</title>
 </head>
-<body>
+<body id="color" >
     <nav class="navbar">
         <div class="nav-logo">
             <h1>Lab Practise</h1>
         </div>
         
         <div class="nav-search">
-            <a href="#login-section" class="nav-link"><h1>Welcome, <?= htmlspecialchars($user['userName']) ?>!</h1></a>
+            <a href="#login-section" class="nav-link profile-btn"><h1>Welcome, <?= htmlspecialchars($user['userName']) ?>!</h1></a>
+            <a href="?logout=true" class="nav-link logout-btn"><h1>Logout</h1></a>
         </div>
     </nav>
-    <div class="ranking-card">
+    <div class="ranking-card" style="margin-top: 2rem; margin-buttom: 2rem; max-height: 85vh;">
       <div class="tabil">
         <header class="ranking-header">
           <h1>City ranking</h1>
@@ -76,8 +77,8 @@ while ($row = $result->fetch_assoc()) {
           <thead>
             <tr>
               <th>#</th>
+              <th></th>
               <th>MAJOR CITY</th>
-              <th>US AQI*</th>
             </tr>
           </thead>
           <tbody id="cityList" >
@@ -94,11 +95,8 @@ while ($row = $result->fetch_assoc()) {
     
     <!-- Logout link -->
      
-    <p><a href="home.php?logout=true">Logout</a></p>
     <script>
           const cities=<?= json_encode($cities)?> 
-          fetchAQIData(cities);
-          showtable();
     </script>
     <script src="./script.js"></script>
 </body>

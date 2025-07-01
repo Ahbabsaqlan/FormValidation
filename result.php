@@ -26,7 +26,7 @@ if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
     header("Location: index.php");
     exit;
 }
-
+echo "<style>body { background-color: " . htmlspecialchars($_SESSION['color']) . "; }</style>";
 if (isset($_GET['reset']) && $_GET['reset'] === 'true') {
     // Unset all session variables
     
@@ -43,7 +43,7 @@ if (isset($_GET['reset']) && $_GET['reset'] === 'true') {
     <title>Your Selected Cities</title>
     <link rel="stylesheet" href="./style.css">
 </head>
-<body>
+<body id="color">
 
     <nav class="navbar">
         <div class="nav-logo">
@@ -51,12 +51,13 @@ if (isset($_GET['reset']) && $_GET['reset'] === 'true') {
         </div>
         
         <div class="nav-search">
-            <a href="#login-section" class="nav-link"><h1>Welcome, <?= htmlspecialchars($user['userName']) ?>!</h1></a>
+            <a href="#login-section" class="nav-link profile-btn"><h1>Welcome, <?= htmlspecialchars($user['userName']) ?>!</h1></a>
+            <a href="?logout=true" class="nav-link logout-btn"><h1>Logout</h1></a>
         </div>
     </nav>
 
 
-<div class="ranking-card">
+<div class="ranking-card" style="margin-top: 2rem; margin-buttom: 2rem; max-height: 85vh;">
     <div class="tabil">
     <header class="ranking-header">
         <h1>Live AQI Data</h1>
@@ -81,7 +82,7 @@ if (isset($_GET['reset']) && $_GET['reset'] === 'true') {
     </div>
     
 </div>
-<p><a href="home.php?logout=true" onclick="deleteCookie('selectedCities')">Logout</a></p>
+
 
 <!-- Embed selected cities -->
 <script>
@@ -140,6 +141,18 @@ async function fetchAQIData(cities) {
 
     tbody.innerHTML = "";
     rows.forEach(r => tbody.appendChild(r));
+}
+
+const btns = document.getElementsByClassName('profile-btn');
+const logout_btns = document.getElementsByClassName('logout-btn');
+
+for (let i = 0; i < btns.length; i++) {
+  btns[i].addEventListener('click', function () {
+    if (logout_btns[i]) {
+      logout_btns[i].style.display = 'block';
+      btns[i].style.display = 'none';
+    }
+  });
 }
 
 function getCategoryClass(aqi) {

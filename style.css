@@ -42,6 +42,10 @@ body {
   
 }
 
+.logout-btn{
+  display: none;
+}
+
 .links a {
   color: white;
   text-decoration: none;
@@ -167,6 +171,8 @@ button:hover {
   /* padding: 1rem; */
   max-width: 1200px;
   height: 100%;
+  /* max-height: 90vh; */
+  margin: auto auto ;
   padding: 2rem;
   background: #fff;
   border-radius: 12px;

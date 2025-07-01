@@ -170,7 +170,7 @@ $form = $_SESSION['form_data'];
         }
     </style>
 </head>
-<body>
+<body id="color">
 
 <div class="card">
     <h2>Confirm Your Information</h2>

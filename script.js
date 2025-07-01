@@ -184,55 +184,29 @@ function validateLoginForm() {
   return isValid;
 }
 
-// Change background color based on user selection
-const colorInput = document.getElementById('color');
-if (colorInput) {
-  colorInput.addEventListener('input', function () {
-    document.body.style.backgroundColor = colorInput.value;
+
+const btns = document.getElementsByClassName('profile-btn');
+const logout_btns = document.getElementsByClassName('logout-btn');
+
+for (let i = 0; i < btns.length; i++) {
+  btns[i].addEventListener('click', function () {
+    if (logout_btns[i]) {
+      logout_btns[i].style.display = 'block';
+      btns[i].style.display = 'none';
+    }
   });
 }
 
 
-// Aqi index featching
-// function fetchAQIData(cities){
-//     const tbody = document.getElementById("cityList");
-//       tbody.innerHTML = "";
-//       cities.forEach((city) => {
-//         let index = Array.from(tbody.children).length;
-//         const row = document.createElement("tr");
 
-//         const flagUrl = `https://flagcdn.com/24x18/${city.country_code.toLowerCase()}.png`;
+// Optional: Change background color based on user selection
 
-//         row.innerHTML = `
-//           <td>${index + 1}</td>
-//           <td><input type="checkbox" value="${city.city_name}" class="country-checkbox"></td>
-//           <td><img src="${flagUrl}" alt="${city.city_name} Flag" class="flag-icon">${city.city_name}</td>
-//         `;
-//         tbody.appendChild(row);
-//       });
+if (color.value) {
+  color.addEventListener('input', function () {
+    document.body.style.backgroundColor = color.value;
+  });
+}
 
-//       // Enforce checkbox limit
-//       const checkboxes = document.querySelectorAll('.country-checkbox');
-//       checkboxes.forEach(cb => {
-//         cb.addEventListener('change', () => {
-//           const checked = document.querySelectorAll('.country-checkbox:checked');
-//           if (checked.length > 10) {
-//             cb.checked = false;
-//             document.getElementById("limitMessage").style.display = 'block';
-//             setTimeout(() => {
-//               document.getElementById("limitMessage").style.display = 'none';
-//             }, 3000);
-//           } else {
-//             document.getElementById("limitMessage").style.display = 'none';
-//           }
-//         });
-//       });
-// }
-// fetchAQIData(cities);
-
-// document.getElementsByClassName("country-checkbox").addEventListener("change", function () {
-//   location.reload(); // Reloads the page when the selection changes
-// });
 function showtable(){
   const tbody = document.getElementById("tableBody");
 
@@ -252,6 +226,10 @@ function showtable(){
       tbody.appendChild(row);
   })
 }
+window.onload = function () {
+  fetchAQIData(cities);
+          showtable();
+};
 
 function fetchAQIData(cities) {
   const tbody = document.getElementById("cityList");

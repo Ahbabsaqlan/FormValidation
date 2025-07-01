@@ -17,6 +17,12 @@ if (isset($_SESSION['allow_edit']) && $_SESSION['allow_edit'] === true) {
     $formData = [];
 }
 
+if(isset($_POST['login']) && $_SESSION['user'] = $user) {
+    // Clear the form data
+    setcookie('bg', $_SESSION['color'], time() + 64000, '/'); // Clear selected cities cookie
+    echo "<style>body { background-color: " . htmlspecialchars($_SESSION['color']) . "; }</style>";
+}
+
 $login_error = '';
 
 // Handle login form submission
@@ -39,7 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
         $user = $result->fetch_assoc();
         if (strcmp(trim($upass), trim($user['password'])) === 0) {
             $_SESSION['user'] = $user;
-            echo "<script>window.location.href = 'home.php';</script>";
+            // echo "<script>window.location.href = 'home.php';</script>";
+            header("Location: home.php");
             exit;
         } else {
             $login_error = "Incorrect password.";
